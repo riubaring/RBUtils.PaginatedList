@@ -2,6 +2,21 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>Riu Baring (riubaring@gmail.com)</Authors>
+    <Company>Riu Baring</Company>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Copyright>2021</Copyright>
+    <Description>Help simplify pagination of a large dataset (IEnumerable&lt;T&gt;).
+
+Based on rbPagination Vue Component (https://github.com/riubaring/vue-componenents/blob/master/src/components/rbPagination.vue) and a "lighter" version of Troy Goode's PagedList (https://github.com/TroyGoode/PagedList)</Description>
+    <RepositoryUrl>https://github.com/riubaring/RBUtils.PaginatedList.Core</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/riubaring/RBUtils.PaginatedList.Core</PackageProjectUrl>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="2.2.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.3" />
+  </ItemGroup>
 
 </Project>
