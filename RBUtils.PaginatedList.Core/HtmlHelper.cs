@@ -148,7 +148,7 @@ namespace RBUtils.PaginatedList.Core
             var paginationText = new TagBuilder("div");
             paginationText.AddCssClass("m-2");
             paginationText.InnerHtml.SetHtmlContent(label + " per page. Showing " + list.FirstItemOnPage.ToString("N0") + " to " + 
-                list.LastItemOnPage.ToString() + " of " + list.TotalItemCount.ToString("N0") + " " + label + ".");
+                list.LastItemOnPage.ToString() + " of " + list.TotalItems.ToString("N0") + " " + label + ".");
 
             // Main container
             var container = new TagBuilder("div");
