@@ -266,9 +266,8 @@ namespace RBUtils.PaginatedList.Core
         }
         private static string GetUrl(Func<int, string> generatePageUrl)
         {
-            var uri = generatePageUrl(0);
-            // TODO - remove occurrence of pageNumber=xx
-            return uri;
+            var uri = generatePageUrl(0).Split('?');
+            return uri[0] + "?" + QueryHelpers.ParseQuery(uri[1]).Remove("pageNumber");
         }
     }
 

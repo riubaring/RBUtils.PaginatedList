@@ -13,6 +13,7 @@ Based on rbPagination Vue Component (https://github.com/riubaring/vue-componenen
     <RepositoryUrl>https://github.com/riubaring/RBUtils.PaginatedList.Core</RepositoryUrl>
     <PackageProjectUrl>https://github.com/riubaring/RBUtils.PaginatedList.Core</PackageProjectUrl>
     <Version>1.0.1</Version>
+    <PackageId>RBUtils.PaginatedList.Core</PackageId>
   </PropertyGroup>
 
   <ItemGroup>
