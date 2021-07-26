@@ -12,7 +12,7 @@ namespace RBUtils.PaginatedList.Core
     {
         public static IHtmlContent PaginatedListPager(this IHtmlHelper html, IPaginatedList list, string area, string page, IDictionary<string, object> values, string? label = "Items") 
         {
-            return SetListPager(list, GetUrl("/" + area + page, values), label);
+            return SetListPager(list, GetUrl("/" + area + page, values.ToDictionary(r => r.Key, r => r.Value)), label);
         }
         public static IHtmlContent PaginatedListPager(this IHtmlHelper html, IPaginatedList list, Func<int, string> generatePageUrl, string? label = "Items")
         {
@@ -239,7 +239,7 @@ namespace RBUtils.PaginatedList.Core
 
             return li;
         }
-        private static string GetUrl(string uri, IDictionary<string, object> parameters)
+        private static string GetUrl(string uri, Dictionary<string, object> parameters)
         {
             foreach (var parameter in parameters)
             {
