@@ -2,25 +2,18 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace RBUtils.PaginatedList.Core
 {
     public static class HtmlHelper
     {
-        public static IHtmlContent PaginatedListPager(this IHtmlHelper html, IPaginatedList list, string area, string page, IDictionary<string, object> values, string? label = "Items") 
-        {
-            return SetListPager(list, GetUrl("/" + area + page, values.ToDictionary(r => r.Key, r => r.Value)), label);
-        }
         public static IHtmlContent PaginatedListPager(this IHtmlHelper html, IPaginatedList list, Func<int, string> generatePageUrl, string? label = "Items")
         {
-            return SetListPager(list, GetUrl(generatePageUrl), label);
-        }
+            //return SetListPager(list, generatePageUrl, label);
+        //}
 
-        private static IHtmlContent SetListPager(IPaginatedList list, string url, string label)
-        { 
+        //private static IHtmlContent SetListPager(IPaginatedList list, Func<int, string> generatePageUrl, string label)
+        //{
             if (list.TotalItems > list.PageSize)
             {
                 var container = new TagBuilder("nav");
@@ -31,75 +24,75 @@ namespace RBUtils.PaginatedList.Core
                 ul.AddCssClass("pagination");
 
                 // First
-                ul.InnerHtml.AppendHtml(SetTagPage(PageTypes.First, list, url));
+                ul.InnerHtml.AppendHtml(SetTagPage(PageTypes.First, list, generatePageUrl));
 
                 // Previous
-                ul.InnerHtml.AppendHtml(SetTagPage(PageTypes.Previous, list, url));
+                ul.InnerHtml.AppendHtml(SetTagPage(PageTypes.Previous, list, generatePageUrl));
 
                 // Page N
                 if (list.TotalPages <= 10)
                 {
                     for (var r = 1; r <= list.TotalPages; r++)
                     {
-                        ul.InnerHtml.AppendHtml(SetTagPage(r, list, url));
+                        ul.InnerHtml.AppendHtml(SetTagPage(r, list, generatePageUrl));
                     }
                 }
                 else
                 {
-                    if (list.PageIndex <= 5)
+                    if (list.PageIndex <= 5)  
                     {
                         for (var i = 1; i <= 7; i++)
                         {
-                            ul.InnerHtml.AppendHtml(SetTagPage(i, list, url));
+                            ul.InnerHtml.AppendHtml(SetTagPage(i, list, generatePageUrl));
                         }
 
-                        ul.InnerHtml.AppendHtml(SetTagPage(PageTypes.Ellipsis, list, url));
+                        ul.InnerHtml.AppendHtml(SetTagPage(PageTypes.Ellipsis, list, generatePageUrl));
 
                         for (var i = list.TotalPages - 2; i <= list.TotalPages; i++)
                         {
-                            ul.InnerHtml.AppendHtml(SetTagPage(i, list, url));
+                            ul.InnerHtml.AppendHtml(SetTagPage(i, list, generatePageUrl));
                         }
 
                     }
                     else if ((list.PageIndex > 5) && (list.PageIndex <= (list.TotalPages - 5)))
                     {
-                        ul.InnerHtml.AppendHtml(SetTagPage(1, list, url));
-                        ul.InnerHtml.AppendHtml(SetTagPage(2, list, url));
-                        ul.InnerHtml.AppendHtml(SetTagPage(PageTypes.Ellipsis, list, url));
+                        ul.InnerHtml.AppendHtml(SetTagPage(1, list, generatePageUrl));
+                        ul.InnerHtml.AppendHtml(SetTagPage(2, list, generatePageUrl));
+                        ul.InnerHtml.AppendHtml(SetTagPage(PageTypes.Ellipsis, list, generatePageUrl));
 
                         for (var u = list.PageIndex - 2; u <= list.PageIndex + 2; u++)
                         {
-                            ul.InnerHtml.AppendHtml(SetTagPage(u, list, url));
+                            ul.InnerHtml.AppendHtml(SetTagPage(u, list, generatePageUrl));
                         }
 
-                        ul.InnerHtml.AppendHtml(SetTagPage(PageTypes.Ellipsis, list, url));
-                        ul.InnerHtml.AppendHtml(SetTagPage(list.TotalPages - 1, list, url));
-                        ul.InnerHtml.AppendHtml(SetTagPage(list.TotalPages, list, url));
+                        ul.InnerHtml.AppendHtml(SetTagPage(PageTypes.Ellipsis, list, generatePageUrl));
+                        ul.InnerHtml.AppendHtml(SetTagPage(list.TotalPages - 1, list, generatePageUrl));
+                        ul.InnerHtml.AppendHtml(SetTagPage(list.TotalPages, list, generatePageUrl));
 
                     }
                     else
                     {
                         for (var b = 1; b <= 3; b++)
                         {
-                            ul.InnerHtml.AppendHtml(SetTagPage(b, list, url));
+                            ul.InnerHtml.AppendHtml(SetTagPage(b, list, generatePageUrl));
                         }
 
-                        ul.InnerHtml.AppendHtml(SetTagPage(PageTypes.Ellipsis, list, url));
+                        ul.InnerHtml.AppendHtml(SetTagPage(PageTypes.Ellipsis, list, generatePageUrl));
 
                         for (var b = list.TotalPages - 6; b <= list.TotalPages; b++)
                         {
-                            ul.InnerHtml.AppendHtml(SetTagPage(b, list, url));
+                            ul.InnerHtml.AppendHtml(SetTagPage(b, list, generatePageUrl));
                         }
                     }
                 }
 
                 // Next
-                ul.InnerHtml.AppendHtml(SetTagPage(PageTypes.Next, list, url));
+                ul.InnerHtml.AppendHtml(SetTagPage(PageTypes.Next, list, generatePageUrl));
 
                 // Last
-                ul.InnerHtml.AppendHtml(SetTagPage(PageTypes.Last, list, url));
+                ul.InnerHtml.AppendHtml(SetTagPage(PageTypes.Last, list, generatePageUrl));
 
-                container.InnerHtml.AppendHtml(SetItemPerPage(list, label, url.Split('?')));
+                container.InnerHtml.AppendHtml(SetItemPerPage(list, label, generatePageUrl(0).Split('?'))); //url.Split('?')));
                 container.InnerHtml.AppendHtml(ul);
 
                 return container;
@@ -109,7 +102,6 @@ namespace RBUtils.PaginatedList.Core
                 return new TagBuilder("span");
             }
         }
-
         private static TagBuilder SetItemPerPage(IPaginatedList list, string? label, string[] queryString)
         {
             // Pagination Dropdown
@@ -173,7 +165,7 @@ namespace RBUtils.PaginatedList.Core
 
             return container;
         }
-        private static TagBuilder SetTagPage(PageTypes t, IPaginatedList list, string url)
+        private static TagBuilder SetTagPage(PageTypes t, IPaginatedList list, Func<int, string> generatePageUrl)
         {
             int pageNo = 0;
             bool disabled = false;
@@ -212,21 +204,20 @@ namespace RBUtils.PaginatedList.Core
 
             if (pageNo > 0)
             {
-                link.MergeAttribute("href", url + "&pageNumber=" + pageNo);
+                link.MergeAttribute("href", generatePageUrl(pageNo)); // url + "&pageNumber=" + pageNo);
             }
 
             return (SetTagWrapper(link, (disabled ? "page-item disabled" : "page-item")));
         }
-        private static TagBuilder SetTagPage(int i, IPaginatedList list, string url)
+        private static TagBuilder SetTagPage(int i, IPaginatedList list, Func<int, string> generatePageUrl)
         {
             var link = new TagBuilder("a");
             link.AddCssClass("page-link");
-            link.MergeAttribute("href", url + "&pageNumber=" + i);
+            link.MergeAttribute("href", generatePageUrl(i));
             link.InnerHtml.SetHtmlContent(i.ToString("N0"));
 
             return (SetTagWrapper(link, (i == list.PageIndex ? "page-item active" : "page-item")));
         }
-
         private static TagBuilder SetTagWrapper(TagBuilder tag, params string[] classes)
         {
             var li = new TagBuilder("li");
@@ -239,38 +230,7 @@ namespace RBUtils.PaginatedList.Core
 
             return li;
         }
-        private static string GetUrl(string uri, Dictionary<string, object> parameters)
-        {
-            foreach (var parameter in parameters)
-            {
-                if(parameter.Value != null)
-                {
-                    if((parameter.Value as string == null) && parameter.Value is IEnumerable values)
-                    {
-                        foreach(var value in values)
-                        {
-                            if(value.ToString().Trim() != "")
-                            {
-                                uri = QueryHelpers.AddQueryString(uri, parameter.Key, value.ToString());
-                            }
-                        }
-                    }
-                    else if(parameter.Value.ToString().Trim() != "")
-                    {
-                        uri = QueryHelpers.AddQueryString(uri, parameter.Key, parameter.Value.ToString());
-                    }
-                }
-            }
-
-            return uri;
-        }
-        private static string GetUrl(Func<int, string> generatePageUrl)
-        {
-            var uri = generatePageUrl(0).Split('?');
-            return uri[0] + "?" + QueryHelpers.ParseQuery(uri[1]).Remove("pageNumber");
-        }
     }
-
     public enum PageTypes {
         All,
         First,
