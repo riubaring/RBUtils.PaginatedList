@@ -10,7 +10,7 @@ namespace RBUtils.PaginatedList.Core
     {
         public static string FromArea(string area, string page, object values)
         {
-            return FromUri("/" + area + page, values.ToDictionary());
+            return GetUrl("/" + area + page, values.ToDictionary());
         }
         public static string FromUri(string uri, object values)
         {
