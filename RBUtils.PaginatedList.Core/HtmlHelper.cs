@@ -9,17 +9,21 @@ namespace RBUtils.PaginatedList.Core
     {
         public static IHtmlContent PaginatedListPager(this IHtmlHelper html, IPaginatedList list, Func<int, string> generatePageUrl, string? label = "Items")
         {
-            //return SetListPager(list, generatePageUrl, label);
-        //}
+            return PaginatedListPager(html, list, generatePageUrl, label, null);
+        }
 
-        //private static IHtmlContent SetListPager(IPaginatedList list, Func<int, string> generatePageUrl, string label)
-        //{
+        public static IHtmlContent PaginatedListPager(this IHtmlHelper html, IPaginatedList list, Func<int, string> generatePageUrl, string? label, int[]? numberOptions)
+        {
+            if (String.IsNullOrEmpty(label)) { label = "Items"; }
+            if (numberOptions is null) { numberOptions = new int[] { 5, 10, 17, 25, 50, 100, 250, 500, 1000 }; }
+
+            var container = new TagBuilder("nav");
+            container.MergeAttribute("aria-label", "Page navigation");
+            container.AddCssClass("pagination flex-row");
+            container.InnerHtml.AppendHtml(SetItemPerPage(list, label, generatePageUrl(0).Split('?'), numberOptions));
+
             if (list.TotalItems > list.PageSize)
             {
-                var container = new TagBuilder("nav");
-                container.MergeAttribute("aria-label", "Page navigation");
-                container.AddCssClass("pagination flex-row");
-
                 var ul = new TagBuilder("ul");
                 ul.AddCssClass("pagination");
 
@@ -39,7 +43,7 @@ namespace RBUtils.PaginatedList.Core
                 }
                 else
                 {
-                    if (list.PageIndex <= 5)  
+                    if (list.PageIndex <= 5)
                     {
                         for (var i = 1; i <= 7; i++)
                         {
@@ -92,20 +96,16 @@ namespace RBUtils.PaginatedList.Core
                 // Last
                 ul.InnerHtml.AppendHtml(SetTagPage(PageTypes.Last, list, generatePageUrl));
 
-                container.InnerHtml.AppendHtml(SetItemPerPage(list, label, generatePageUrl(0).Split('?'))); //url.Split('?')));
                 container.InnerHtml.AppendHtml(ul);
+            }
 
-                return container;
-            }
-            else
-            {
-                return new TagBuilder("span");
-            }
+            return container;
         }
-        private static TagBuilder SetItemPerPage(IPaginatedList list, string? label, string[] queryString)
+
+        private static TagBuilder SetItemPerPage(IPaginatedList list, string? label, string[] queryString, int[] numberOptions)
         {
             // Pagination Dropdown
-            var numberOptions = new int[] { 5, 10, 17, 25, 50, 100, 250, 500, 1000 };
+            //var numberOptions = new int[] { 5, 10, 17, 25, 50, 100, 250, 500, 1000 };
 
             var dropdown = new TagBuilder("select");
             dropdown.MergeAttribute("name", "pageSize");
@@ -222,7 +222,7 @@ namespace RBUtils.PaginatedList.Core
         {
             var li = new TagBuilder("li");
 
-            foreach(var c in classes)
+            foreach (var c in classes)
             {
                 li.AddCssClass(c);
             }
@@ -231,7 +231,8 @@ namespace RBUtils.PaginatedList.Core
             return li;
         }
     }
-    public enum PageTypes {
+    public enum PageTypes
+    {
         All,
         First,
         Previous,
