@@ -12,8 +12,9 @@
 Based on rbPagination Vue Component (https://github.com/riubaring/vue-componenents/blob/master/src/components/rbPagination.vue) and a "lighter" version of Troy Goode's PagedList (https://github.com/TroyGoode/PagedList)</Description>
     <RepositoryUrl>https://github.com/riubaring/RBUtils.PaginatedList.Core</RepositoryUrl>
     <PackageProjectUrl>https://github.com/riubaring/RBUtils.PaginatedList.Core</PackageProjectUrl>
-    <Version>1.0.10</Version>
+    <Version>1.0.8</Version>
     <PackageId>RBUtils.PaginatedList.Core</PackageId>
+    <PackageReleaseNotes>Set target framework to .Net 6.0</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
