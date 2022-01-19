@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.WebUtilities;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 
 namespace RBUtils.PaginatedList.Core

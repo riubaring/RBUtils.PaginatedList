@@ -1,7 +1,6 @@
-﻿using Microsoft.AspNetCore.Html;
+﻿using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.WebUtilities;
-using System;
 
 namespace RBUtils.PaginatedList.Core
 {
